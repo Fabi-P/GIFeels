@@ -60,4 +60,4 @@ jobs:
                 CONNECTION_STRING=${{ secrets.CONNECTION_STRING }} \
                 ENVIRONMENT=PRODUCTION \
                 docker compose -f ./compose.prod.yml pull
-                docker compose -f ./compose.prod.yml up -d
+                docker compose -f ./compose.prod.yml up -d --remove-orphans --force-recreate
