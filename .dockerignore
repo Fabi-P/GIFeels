@@ -172,7 +172,6 @@ certs/
 services/
 
 .DS_Store
-*.md
 .github/
 documentation/
 .gitignore
@@ -180,5 +179,7 @@ template_env.txt
 unit_tests/
 
 *.yml
-
+.dockerignore
+Dockerfile
 requirements.txt
+README.md
