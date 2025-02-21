@@ -13,50 +13,29 @@ services:
       - private
 
 
-  mysql:
-    container_name: mysql
-    image: mysql:8
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: mood_tracker
-    healthcheck:
-      test: mysql --host=mysql --user="root" --password="${MYSQL_ROOT_PASSWORD}" --silent --execute "USE mood_tracker;"
-      interval: 10s
-      timeout: 10s
-      retries: 10
-    volumes:
-      - mysql:/var/lib/mysql
-    networks:
-      - private
-
   app:
     container_name: app
-    image: ghcr.io/${IMAGE_REPO}:${RELEASE_VERSION}
+    image: ghcr.io/${IMAGE_REPO}:latest
     restart: always
     environment:
       GIPHY_API_KEY: ${GIPHY_API_KEY}
       SECRET_KEY: ${SECRET_KEY}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_DOMAIN: ${GOOGLE_CLIENT_DOMAIN}
+      GOOGLE_CLIENT_DOMAIN: 'accounts.google.com'
       REDIS_HOST: 'redis'
       STORAGE_URI: 'redis://redis:6379/0'
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      CONNECTION_STRING: ${CONNECTION_STRING_DOCKER}
+      CONNECTION_STRING: ${CONNECTION_STRING}
       ENVIRONMENT: 'PRODUCTION'
     depends_on:
       redis:
-        condition: service_healthy
-      mysql:
         condition: service_healthy
     networks:
       - private
       - public
 
 
-volumes:
-  mysql:
+
 
 networks:
   public:

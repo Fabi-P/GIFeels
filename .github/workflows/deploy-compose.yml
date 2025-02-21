@@ -51,13 +51,11 @@ jobs:
             script: |
                 echo $APPTOKEN | docker login ghcr.io -u $USERNAME --password-stdin
                 cd ~/.deploy/${{ github.event.repository.name }}            
-                GIPHY_API_KEY=${{ secrets.GIPHY_API_KEY }} \
-                SECRET_KEY=${{ secrets.SECRET_KEY }} \
-                GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
-                GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} \
-                GOOGLE_CLIENT_DOMAIN=${{ secrets.GOOGLE_CLIENT_DOMAIN }} \
-                MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} \
-                CONNECTION_STRING=${{ secrets.CONNECTION_STRING }} \
-                ENVIRONMENT=PRODUCTION \
-                docker compose -f ./compose.prod.yml pull
-                docker compose -f ./compose.prod.yml up -d --remove-orphans --force-recreate
+                
+                docker compose -f ./compose.prod.yml up -d --pull always --remove-orphans --force-recreate
+                    -e IMAGE_REPO=${{ github.event.repository.name }}
+                    -e GIPHY_API_KEY=${{ secrets.GIPHY_API_KEY }} \
+                    -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
+                    -e GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
+                    -e GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} \
+                    -e CONNECTION_STRING=${{ secrets.CONNECTION_STRING }}
