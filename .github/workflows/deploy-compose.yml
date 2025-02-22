@@ -37,7 +37,10 @@ jobs:
     needs: push_to_registry
     runs-on: ubuntu-latest
     steps:
-       
+        - name: Print working directory and list files
+          run: |
+            pwd
+            ls -lah
         - name: Copy docker-compose file to target server
           uses: appleboy/scp-action@v0.1.3
           with:
@@ -45,7 +48,7 @@ jobs:
             username: ${{ secrets.EC2_USER }}
             port: 22
             key: ${{ secrets.EC2_SSH_KEY }}
-            source: "compose.prod.yml"
+            source: "${{ github.workspace }}/compose.prod.yml"
             target: "/home/${{ secrets.EC2_USER }}/app"
 
         - name: SSH into EC2 and Deploy
