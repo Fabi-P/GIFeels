@@ -14,3 +14,4 @@ Flask-Limiter
 waitress
 mysql-connector-python
 alembic
+Flask-Testing
