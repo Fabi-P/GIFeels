@@ -21,7 +21,7 @@ jobs:
           file: Dockerfile
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: ghcr.io/gifeels-app:latest
   
   deploy:
     needs: push_to_registry
@@ -41,7 +41,7 @@ jobs:
         - name: SSH into EC2 and Deploy
           uses: appleboy/ssh-action@v0.1.6
           env:
-            IMAGE_REPO: "ghcr.io/${{ github.repository }}:latest"
+            IMAGE_REPO: "ghcr.io/gifeels-app:latest"
             GIPHY_API_KEY: ${{ secrets.GIPHY_API_KEY }}
             SECRET_KEY: ${{ secrets.SECRET_KEY }}
             GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
