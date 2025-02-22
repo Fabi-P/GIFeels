@@ -1,0 +1,43 @@
+services:
+
+  redis:
+    image: redis:latest
+    restart: always
+    container_name: redis
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    networks:
+      - private
+
+
+  app:
+    container_name: app
+    image: ${IMAGE_REPO}
+    restart: always
+    environment:
+      GIPHY_API_KEY: ${GIPHY_API_KEY}
+      SECRET_KEY: ${SECRET_KEY}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_DOMAIN: 'accounts.google.com'
+      REDIS_HOST: 'redis'
+      STORAGE_URI: 'redis://redis:6379/0'
+      CONNECTION_STRING: ${CONNECTION_STRING}
+      ENVIRONMENT: 'PRODUCTION'
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - private
+      - public
+
+
+
+
+networks:
+  public:
+  private:
+    driver: bridge
