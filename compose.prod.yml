@@ -15,7 +15,7 @@ services:
 
   app:
     container_name: app
-    image: ghcr.io/${IMAGE_REPO}:latest
+    image: ${IMAGE_REPO}
     restart: always
     environment:
       GIPHY_API_KEY: ${GIPHY_API_KEY}
